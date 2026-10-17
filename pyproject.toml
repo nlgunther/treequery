@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "treequery"
+version = "0.2.1"
+description = "Cost-ordered search of large file trees: prune the tree, filter by name/stat, read text last."
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [{name = "Ken"}]
+dependencies = ["pyyaml>=6.0", "loguru>=0.7", "tqdm>=4.60"]
+
+[project.optional-dependencies]
+# readers is Ken's shared file-reading package; needed only for the text stage.
+text = ["readers[pdf,docx,excel]"]
+dev = ["pytest>=7.0", "pytest-cov>=4.0", "hypothesis>=6.0",
+       # builders of real PDF/docx/xlsx/odt files for tests/test_formats_real.py
+       "reportlab", "python-docx", "openpyxl", "odfpy"]
+
+[project.scripts]
+treequery = "treequery.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+markers = ["slow_statistics: simulation over many random seeds (a few seconds)"]
